@@ -1,0 +1,24 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Freelance Brain · FalkorDB</title>
+<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+<style>body{margin:0;font-family:system-ui;background:#0f1220;color:#e6e8f0;display:grid;grid-template-columns:420px 1fr;height:100vh}
+#l{padding:18px;overflow:auto;border-right:1px solid #262b45}h1{font-size:20px;margin:0 0 4px}small{color:#8a90b0}
+input{width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1px solid #333a60;background:#171b31;color:#fff;margin:12px 0}
+.chip{display:inline-block;margin:3px;padding:4px 9px;border-radius:12px;background:#22284a;cursor:pointer;font-size:12px}
+.ans{background:#171b31;border-radius:10px;padding:12px;margin-top:12px;line-height:1.45}pre{white-space:pre-wrap;font-size:11px;color:#9fe3b0}
+table{font-size:12px;border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #262b45;padding:3px;text-align:left}#g{height:100vh}</style></head>
+<body><div id="l"><h1>🧠 Freelance Brain</h1><small>Company-brain agent for a solo freelance studio · FalkorDB + Gemini · synthetic data</small>
+<input id="q" placeholder="Ask: which clients bring the most revenue?" onkeydown="if(event.key=='Enter')go()">
+<div>{% for q in ["Which clients bring the most revenue?","Where do orders come from and what do fees cost me?","Which services are most profitable?","Show referral chains","Why did we decide things? Trace decisions","Which clients are at risk?","Revenue by industry"] %}<span class="chip" onclick="q.value=this.innerText;go()">{{q}}</span>{% endfor %}</div>
+<div id="out"></div></div><div id="g"></div>
+<script>
+const colors={Client:'#5b8cff',Order:'#f5a524',Platform:'#e5484d',Service:'#30a46c',Skill:'#8e4ec6',Industry:'#12a594',Decision:'#ffd60a'};
+let net;fetch('/api/graph').then(r=>r.json()).then(d=>{d.nodes.forEach(n=>{n.color=colors[n.group];n.font={color:'#ddd',size:10};n.shape=n.group=='Decision'?'star':'dot';n.size=n.group=='Platform'||n.group=='Service'?18:8});
+d.edges.forEach(e=>{e.arrows='to';e.color={color:'#39406a'};e.label=undefined});
+net=new vis.Network(document.getElementById('g'),{nodes:new vis.DataSet(d.nodes),edges:new vis.DataSet(d.edges)},{physics:{stabilization:{iterations:150}}});});
+async function go(){out.innerHTML='<div class=ans>Thinking over the graph…</div>';const r=await(await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({q:q.value})})).json();
+if(r.error){out.innerHTML='<div class=ans>'+r.error+'</div>';return}
+const cols=r.rows.length?Object.keys(r.rows[0]):[];
+out.innerHTML=`<div class=ans><b>Answer</b><br>${r.answer.replace(/\*\*(.+?)\*\*/g,"<b>$1</b>")}</div><div class=ans><b>Tool:</b> ${r.tool||'LLM text-to-Cypher'}<pre>${r.cypher}</pre>
+<table><tr>${cols.map(c=>'<th>'+c+'</th>').join('')}</tr>${r.rows.slice(0,10).map(x=>'<tr>'+cols.map(c=>'<td>'+JSON.stringify(x[c])+'</td>').join('')+'</tr>').join('')}</table></div>`;
+const names=r.rows.flatMap(x=>Object.values(x)).filter(v=>typeof v=='string');const ids=net.body.data.nodes.get().filter(n=>names.includes(n.label)).map(n=>n.id);if(ids.length)net.selectNodes(ids);}
+</script></body></html>

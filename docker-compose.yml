@@ -1,0 +1,11 @@
+services:
+  falkordb:
+    image: falkordb/falkordb:latest
+    ports: ["6379:6379", "3000:3000"]   # 3000 = FalkorDB Browser
+  app:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      FALKORDB_HOST: falkordb
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    depends_on: [falkordb]
