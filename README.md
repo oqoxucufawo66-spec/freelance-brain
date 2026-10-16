@@ -93,3 +93,10 @@ Env: `FALKORDB_HOST/PORT` (server mode), `FALKORDB_FILE` (embedded), `GRAPH_NAME
 
 ## License
 MIT
+
+## AI assistance disclosure
+Per the Graph Hacks rules: AI coding assistants were used to help write code, docs and the demo video. The graph model,
+queries and architecture were reviewed and tested by the author. At runtime the app uses Google Gemini for planning and answer summaries.
+
+## Demo
+Demo video: see `demo.mp4` (link to be added). Screenshots in `docs/`.
