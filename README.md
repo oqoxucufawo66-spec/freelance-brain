@@ -99,4 +99,4 @@ Per the Graph Hacks rules: AI coding assistants were used to help write code, do
 queries and architecture were reviewed and tested by the author. At runtime the app uses Google Gemini for planning and answer summaries.
 
 ## Demo
-Demo video: see `demo.mp4` (link to be added). Screenshots in `docs/`.
+Demo video (1:54): https://github.com/oqoxucufawo66-spec/freelance-brain/blob/main/demo.mp4 (raw: https://raw.githubusercontent.com/oqoxucufawo66-spec/freelance-brain/main/demo.mp4). Screenshots in `docs/`.

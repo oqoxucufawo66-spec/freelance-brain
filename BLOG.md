@@ -100,4 +100,4 @@ Next I want to connect real exports from freelance platforms (anonymized on inge
 proposing follow-ups to at-risk clients, flagging scope creep against the original spec, and storing every new
 decision with its source message automatically.
 
-*Repo: https://github.com/oqoxucufawo66-spec/freelance-brain · Demo video: (link)*
+*Repo: https://github.com/oqoxucufawo66-spec/freelance-brain · Demo video: https://github.com/oqoxucufawo66-spec/freelance-brain/blob/main/demo.mp4*
